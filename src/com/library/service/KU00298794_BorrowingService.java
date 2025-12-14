@@ -3,6 +3,7 @@ package com.library.service;
 import com.library.KU00298794_Library;
 import com.library.model.*;
 import com.library.observer.KU00298794_NotificationService;
+import com.library.util.KU00298794_Logger;
 import java.util.*;
 
 /**
@@ -39,6 +40,9 @@ public class KU00298794_BorrowingService {
             book.addBorrowRecord(record);
             activeBorrowings.put(generateKey(user, book), record);
 
+            // Log event
+            KU00298794_Logger.getInstance().logBorrow(user.getId(), book.getBookId());
+
             System.out.println("✓ Book borrowed successfully!");
             System.out.println("  Due Date: " + dueDate);
 
@@ -72,12 +76,18 @@ public class KU00298794_BorrowingService {
 
                 // Notify user about fine
                 notificationService.notifyOverdue(user, book, fine);
+
+                // Log fine
+                KU00298794_Logger.getInstance().logFine(user.getId(), fine);
             } else {
                 System.out.println("✓ Book returned on time!");
             }
 
             user.removeBorrowRecord(record);
             activeBorrowings.remove(key);
+
+            // Log return
+            KU00298794_Logger.getInstance().logReturn(user.getId(), book.getBookId());
 
             // Check if book was reserved and notify next reserver
             KU00298794_Reservation res = book.getReservationQueue().peek();

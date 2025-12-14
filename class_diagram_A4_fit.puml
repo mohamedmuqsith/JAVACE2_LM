@@ -1,0 +1,338 @@
+@startuml
+' A4 Landscape: 297mm x 210mm @ 96 DPI = 1123 x 794 pixels
+scale max 1123 width
+scale max 794 height
+
+skinparam backgroundColor white
+skinparam classBackgroundColor white
+skinparam classBorderColor #666666
+skinparam shadowing false
+skinparam linetype polyline
+skinparam defaultFontSize 6
+skinparam classFontSize 7
+skinparam classAttributeFontSize 5
+skinparam classStereotypeFontSize 5
+skinparam packageFontSize 6
+skinparam nodesep 8
+skinparam ranksep 8
+skinparam padding 2
+
+title Smart Library System - KU00298794
+
+' ===== BUILDER =====
+package "Builder" #FFFACD {
+  class BookBuilder <<Builder>> {
+    -bookId: String
+    -title: String
+    -author: String
+    -category: String
+    --
+    +setBookId(): BookBuilder
+    +setTitle(): BookBuilder
+    +setAuthor(): BookBuilder
+    +build(): Book
+  }
+}
+
+' ===== CORE =====
+package "Core Model" #E6F3FF {
+  abstract class User {
+    -userId: String
+    -name: String
+    -email: String
+    -fineStrategy
+    --
+    +{abstract} getBorrowingLimit(): int
+    +{abstract} getDueDays(): int
+    +getId(): String
+    +getName(): String
+    +calculateFine(): double
+    +payFine(): void
+  }
+  class Student {
+    -LIMIT: int
+    -DAYS: int
+  }
+  class Faculty {
+    -LIMIT: int
+    -DAYS: int
+  }
+  class Guest {
+    -LIMIT: int
+    -DAYS: int
+  }
+
+  class Book {
+    -bookId: String
+    -title: String
+    -author: String
+    -currentState: BookState
+    -borrowedHistory: List
+    -reservationQueue: Queue
+    --
+    +getBookId(): String
+    +getTitle(): String
+    +borrow(): boolean
+    +returnBook(): boolean
+    +reserve(): boolean
+  }
+
+  class Librarian {
+    -librarianId: String
+    -name: String
+    -email: String
+    --
+    +verifyMember(): boolean
+    +collectFine(): void
+  }
+
+  class BorrowRecord {
+    -user: User
+    -book: Book
+    -borrowDate: Date
+    -dueDate: Date
+    --
+    +isOverdue(): boolean
+    +calculateOverdueDays(): int
+  }
+
+  class Reservation {
+    -reservationId: String
+    -user: User
+    -status: String
+    --
+    +fulfill(): void
+    +cancel(): void
+  }
+
+  class Transaction {
+    -transactionId: String
+    -amount: double
+    -type: String
+    --
+    +process(): void
+  }
+
+  class Review {
+    -reviewerName: String
+    -rating: double
+    -comment: String
+  }
+}
+
+' ===== STATE =====
+package "State" #E8F5E9 {
+  interface BookState <<State>> {
+    +borrow(): boolean
+    +returnBook(): boolean
+    +reserve(): boolean
+    +getStateName(): String
+  }
+  class AvailableState
+  class BorrowedState
+  class ReservedState
+}
+
+' ===== STRATEGY =====
+package "Strategy" #FCE4EC {
+  interface FineStrategy <<Strategy>> {
+    +calculateFine(): double
+    +getFineRate(): double
+  }
+  class StudentFineStrategy {
+    -RATE: double
+  }
+  class FacultyFineStrategy {
+    -RATE: double
+  }
+  class GuestFineStrategy {
+    -RATE: double
+  }
+}
+
+' ===== DECORATOR =====
+package "Decorator" #FFF3E0 {
+  abstract class BookDecorator <<Decorator>> {
+    #decoratedBook: Book
+    --
+    +getDescription(): String
+    +getAdditionalInfo(): String
+  }
+  class FeaturedBookDecorator {
+    -featuredReason: String
+  }
+  class RecommendedBookDecorator {
+    -recommendedBy: String
+  }
+  class SpecialEditionDecorator {
+    -editionType: String
+  }
+}
+
+' ===== OBSERVER =====
+package "Observer" #E0F7FA {
+  interface Observer <<Observer>> {
+    +update(): void
+    +getObserverId(): String
+  }
+  class NotificationService <<Subject>> {
+    -observers: List
+    --
+    +attach(): void
+    +detach(): void
+    +notifyObservers(): void
+  }
+  class EmailNotification {
+    -email: String
+    -userId: String
+  }
+  class SMSNotification {
+    -phoneNumber: String
+    -userId: String
+  }
+}
+
+' ===== COMMAND =====
+package "Command" #F3E5F5 {
+  interface Command <<Command>> {
+    +execute(): boolean
+    +undo(): boolean
+    +getDescription(): String
+  }
+  class BorrowCommand {
+    -user: User
+    -book: Book
+    -executed: boolean
+  }
+  class ReturnCommand {
+    -user: User
+    -book: Book
+    -executed: boolean
+  }
+  class ReserveCommand {
+    -user: User
+    -book: Book
+    -executed: boolean
+  }
+  class CancelReservationCommand {
+    -user: User
+    -book: Book
+  }
+  class CommandInvoker <<Invoker>> {
+    -commandHistory: List
+    --
+    +executeCommand(): boolean
+    +undoLastCommand(): boolean
+  }
+}
+
+' ===== SYSTEM =====
+package "System" #F5F5F5 {
+  class Library {
+    -books: Map
+    -users: Map
+    -borrowingService
+    -reservationService
+    --
+    +addBook(): void
+    +removeBook(): void
+    +getBook(): Book
+    +addUser(): void
+    +getUser(): User
+  }
+
+  class LibraryCLI <<UI>> {
+    -library: Library
+    -scanner: Scanner
+    --
+    +start(): void
+    +{static} main(): void
+  }
+
+  class Logger <<Singleton>> {
+    -{static} instance: Logger
+    -logs: List
+    --
+    +{static} getInstance(): Logger
+    +info(): void
+    +warning(): void
+    +error(): void
+  }
+  enum LogLevel {
+    INFO
+    WARNING
+    ERROR
+    DEBUG
+  }
+}
+
+' ===== SERVICES =====
+package "Services" #F1F8E9 {
+  class BorrowingService {
+    -library: Library
+    -activeBorrowings: Map
+    --
+    +borrowBook(): boolean
+    +returnBook(): boolean
+    +calculateFine(): double
+  }
+  class ReservationService {
+    -library: Library
+    -reservations: Map
+    --
+    +reserveBook(): boolean
+    +cancelReservation(): boolean
+  }
+  class ReportService {
+    -library: Library
+    --
+    +generateMostBorrowedBooks(): List
+    +generateActiveBorrowers(): List
+    +generateOverdueBooks(): List
+  }
+}
+
+' ===== RELATIONSHIPS =====
+BookBuilder ..> Book : creates
+User <|-- Student
+User <|-- Faculty
+User <|-- Guest
+BookState <|.. AvailableState
+BookState <|.. BorrowedState
+BookState <|.. ReservedState
+Book o-- BookState
+FineStrategy <|.. StudentFineStrategy
+FineStrategy <|.. FacultyFineStrategy
+FineStrategy <|.. GuestFineStrategy
+User o-- FineStrategy
+BookDecorator <|-- FeaturedBookDecorator
+BookDecorator <|-- RecommendedBookDecorator
+BookDecorator <|-- SpecialEditionDecorator
+BookDecorator o-- Book
+Observer <|.. EmailNotification
+Observer <|.. SMSNotification
+NotificationService o-- Observer
+Command <|.. BorrowCommand
+Command <|.. ReturnCommand
+Command <|.. ReserveCommand
+Command <|.. CancelReservationCommand
+CommandInvoker o-- Command
+Library *-- Book
+Library *-- User
+Library --> BorrowingService
+Library --> ReservationService
+Library --> ReportService
+Library --> NotificationService
+LibraryCLI ..> Library
+Logger +-- LogLevel
+User --> BorrowRecord
+User --> Transaction
+Book --> BorrowRecord
+Book --> Reservation
+Book --> Review
+BorrowCommand --> BorrowingService
+ReturnCommand --> BorrowingService
+ReserveCommand --> ReservationService
+CancelReservationCommand --> ReservationService
+
+@enduml

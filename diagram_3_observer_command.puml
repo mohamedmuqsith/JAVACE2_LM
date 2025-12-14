@@ -1,0 +1,123 @@
+@startuml Observer and Command Patterns - KU00298794
+
+skinparam backgroundColor white
+skinparam classBackgroundColor white
+skinparam classBorderColor black
+skinparam shadowing false
+skinparam defaultFontSize 10
+skinparam nodesep 60
+skinparam ranksep 50
+
+title Observer and Command Patterns - KU00298794
+
+package "Observer Pattern" {
+    interface KU00298794_Observer <<Observer>> {
+        +update(message: String): void
+        +getObserverId(): String
+    }
+
+    class KU00298794_NotificationService <<Subject>> {
+        -observers: List<KU00298794_Observer>
+        +KU00298794_NotificationService()
+        +attach(observer): void
+        +detach(observer): void
+        +notifyObservers(message): void
+        +notifyDueDateReminder(user, book): void
+        +notifyOverdue(user, book, fine): void
+        +notifyReservationAvailable(user, book): void
+        -notifyObserversByUser(user, message): void
+    }
+
+    class KU00298794_EmailNotification <<ConcreteObserver>> {
+        -email: String
+        -userId: String
+        +KU00298794_EmailNotification(userId, email)
+        +update(message): void
+        +getObserverId(): String
+        -sendEmail(message): void
+    }
+
+    class KU00298794_SMSNotification <<ConcreteObserver>> {
+        -phoneNumber: String
+        -userId: String
+        +KU00298794_SMSNotification(userId, phoneNumber)
+        +update(message): void
+        +getObserverId(): String
+        -sendSMS(message): void
+    }
+}
+
+package "Command Pattern" {
+    interface KU00298794_Command <<Command>> {
+        +execute(): boolean
+        +undo(): boolean
+        +getDescription(): String
+    }
+
+    class KU00298794_BorrowCommand <<ConcreteCommand>> {
+        -user: KU00298794_User
+        -book: KU00298794_Book
+        -service: KU00298794_BorrowingService
+        -executed: boolean
+        +KU00298794_BorrowCommand(user, book, service)
+        +execute(): boolean
+        +undo(): boolean
+        +getDescription(): String
+    }
+
+    class KU00298794_ReturnCommand <<ConcreteCommand>> {
+        -user: KU00298794_User
+        -book: KU00298794_Book
+        -service: KU00298794_BorrowingService
+        -executed: boolean
+        +KU00298794_ReturnCommand(user, book, service)
+        +execute(): boolean
+        +undo(): boolean
+        +getDescription(): String
+    }
+
+    class KU00298794_ReserveCommand <<ConcreteCommand>> {
+        -user: KU00298794_User
+        -book: KU00298794_Book
+        -service: KU00298794_ReservationService
+        -executed: boolean
+        +KU00298794_ReserveCommand(user, book, service)
+        +execute(): boolean
+        +undo(): boolean
+        +getDescription(): String
+    }
+
+    class KU00298794_CancelReservationCommand <<ConcreteCommand>> {
+        -user: KU00298794_User
+        -book: KU00298794_Book
+        -service: KU00298794_ReservationService
+        -executed: boolean
+        +KU00298794_CancelReservationCommand(user, book, service)
+        +execute(): boolean
+        +undo(): boolean
+        +getDescription(): String
+    }
+
+    class KU00298794_CommandInvoker <<Invoker>> {
+        -commandHistory: List<KU00298794_Command>
+        +KU00298794_CommandInvoker()
+        +executeCommand(command): boolean
+        +undoLastCommand(): boolean
+        +getHistory(): List<KU00298794_Command>
+        +printHistory(): void
+    }
+}
+
+' Observer Pattern relationships
+KU00298794_Observer <|.. KU00298794_EmailNotification
+KU00298794_Observer <|.. KU00298794_SMSNotification
+KU00298794_NotificationService o-- KU00298794_Observer
+
+' Command Pattern relationships
+KU00298794_Command <|.. KU00298794_BorrowCommand
+KU00298794_Command <|.. KU00298794_ReturnCommand
+KU00298794_Command <|.. KU00298794_ReserveCommand
+KU00298794_Command <|.. KU00298794_CancelReservationCommand
+KU00298794_CommandInvoker o-- KU00298794_Command
+
+@enduml

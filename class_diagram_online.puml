@@ -1,0 +1,199 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam defaultFontSize 9
+
+title Smart Library Management System - KU00298794
+
+' === CORE MODEL ===
+package "Core Model" {
+  abstract class KU00298794_User {
+    -userId: String
+    -name: String
+    -email: String
+    +getId(): String
+    +getName(): String
+    +{abstract} getBorrowingLimit(): int
+    +{abstract} getDueDays(): int
+    +calculateFine(days): double
+    +payFine(amount): void
+  }
+  class KU00298794_Student
+  class KU00298794_Faculty
+  class KU00298794_Guest
+  
+  class KU00298794_Book {
+    -bookId: String
+    -title: String
+    -author: String
+    -currentState: BookState
+    +borrow(user): boolean
+    +returnBook(): boolean
+    +reserve(user): boolean
+  }
+  
+  class KU00298794_BorrowRecord {
+    -borrowDate: Date
+    -dueDate: Date
+    +isOverdue(): boolean
+  }
+  
+  class KU00298794_Reservation {
+    -reservationDate: Date
+    +fulfill(): void
+    +cancel(): void
+  }
+  
+  class KU00298794_Librarian {
+    -name: String
+    +verifyMember(userId): boolean
+    +collectFine(user, amount): void
+  }
+  
+  class KU00298794_Transaction {
+    -amount: double
+    +process(): void
+  }
+  
+  class KU00298794_Review {
+    -rating: double
+    -comment: String
+  }
+}
+
+' === BUILDER PATTERN ===
+package "Builder Pattern" {
+  class KU00298794_BookBuilder <<Builder>> {
+    +setBookId(id): BookBuilder
+    +setTitle(title): BookBuilder
+    +setAuthor(author): BookBuilder
+    +build(): Book
+  }
+}
+
+' === STATE PATTERN ===
+package "State Pattern" {
+  interface KU00298794_BookState <<State>> {
+    +borrow(book, user): boolean
+    +returnBook(book): boolean
+    +reserve(book, user): boolean
+  }
+  class KU00298794_AvailableState
+  class KU00298794_BorrowedState
+  class KU00298794_ReservedState
+}
+
+' === STRATEGY PATTERN ===
+package "Strategy Pattern" {
+  interface KU00298794_FineCalculationStrategy <<Strategy>> {
+    +calculateFine(daysOverdue): double
+    +getFineRate(): double
+  }
+  class KU00298794_StudentFineStrategy
+  class KU00298794_FacultyFineStrategy
+  class KU00298794_GuestFineStrategy
+}
+
+' === DECORATOR PATTERN ===
+package "Decorator Pattern" {
+  abstract class KU00298794_BookDecorator <<Decorator>> {
+    #decoratedBook: Book
+    +getDescription(): String
+  }
+  class KU00298794_FeaturedBookDecorator
+  class KU00298794_RecommendedBookDecorator
+  class KU00298794_SpecialEditionDecorator
+}
+
+' === OBSERVER PATTERN ===
+package "Observer Pattern" {
+  interface KU00298794_Observer <<Observer>> {
+    +update(message): void
+  }
+  class KU00298794_NotificationService <<Subject>> {
+    +attach(observer): void
+    +detach(observer): void
+    +notifyObservers(msg): void
+  }
+  class KU00298794_EmailNotification
+  class KU00298794_SMSNotification
+}
+
+' === COMMAND PATTERN ===
+package "Command Pattern" {
+  interface KU00298794_Command <<Command>> {
+    +execute(): boolean
+    +undo(): boolean
+  }
+  class KU00298794_BorrowCommand
+  class KU00298794_ReturnCommand
+  class KU00298794_ReserveCommand
+  class KU00298794_CancelReservationCommand
+  class KU00298794_CommandInvoker <<Invoker>> {
+    +executeCommand(cmd): boolean
+    +undoLastCommand(): boolean
+  }
+}
+
+' === SYSTEM CORE ===
+package "System Core" {
+  class KU00298794_Library {
+    +addBook(book): void
+    +addUser(user): void
+    +getBook(id): Book
+    +getUser(id): User
+  }
+  class KU00298794_LibraryCLI <<UI>> {
+    +start(): void
+  }
+  class KU00298794_Logger <<Singleton>> {
+    -{static} instance
+    +getInstance(): Logger
+    +logBorrow(userId, bookId): void
+  }
+}
+
+' === SERVICE LAYER ===
+package "Service Layer" {
+  class KU00298794_BorrowingService
+  class KU00298794_ReservationService
+  class KU00298794_ReportService
+}
+
+' === RELATIONSHIPS ===
+KU00298794_User <|-- KU00298794_Student
+KU00298794_User <|-- KU00298794_Faculty
+KU00298794_User <|-- KU00298794_Guest
+
+KU00298794_BookState <|.. KU00298794_AvailableState
+KU00298794_BookState <|.. KU00298794_BorrowedState
+KU00298794_BookState <|.. KU00298794_ReservedState
+
+KU00298794_FineCalculationStrategy <|.. KU00298794_StudentFineStrategy
+KU00298794_FineCalculationStrategy <|.. KU00298794_FacultyFineStrategy
+KU00298794_FineCalculationStrategy <|.. KU00298794_GuestFineStrategy
+
+KU00298794_BookDecorator <|-- KU00298794_FeaturedBookDecorator
+KU00298794_BookDecorator <|-- KU00298794_RecommendedBookDecorator
+KU00298794_BookDecorator <|-- KU00298794_SpecialEditionDecorator
+
+KU00298794_Observer <|.. KU00298794_EmailNotification
+KU00298794_Observer <|.. KU00298794_SMSNotification
+
+KU00298794_Command <|.. KU00298794_BorrowCommand
+KU00298794_Command <|.. KU00298794_ReturnCommand
+KU00298794_Command <|.. KU00298794_ReserveCommand
+KU00298794_Command <|.. KU00298794_CancelReservationCommand
+
+KU00298794_Book o-- KU00298794_BookState
+KU00298794_User o-- KU00298794_FineCalculationStrategy
+KU00298794_BookDecorator o-- KU00298794_Book
+KU00298794_NotificationService o-- KU00298794_Observer
+KU00298794_CommandInvoker o-- KU00298794_Command
+KU00298794_BookBuilder ..> KU00298794_Book
+
+KU00298794_Library *-- KU00298794_Book
+KU00298794_Library *-- KU00298794_User
+KU00298794_LibraryCLI ..> KU00298794_Library
+
+@enduml

@@ -3,6 +3,7 @@ package com.library.service;
 import com.library.KU00298794_Library;
 import com.library.model.*;
 import com.library.observer.KU00298794_NotificationService;
+import com.library.util.KU00298794_Logger;
 import java.util.*;
 
 /**
@@ -30,6 +31,10 @@ public class KU00298794_ReservationService {
                     "RES-" + System.currentTimeMillis(), user, book));
 
             System.out.println("✓ Book reserved successfully by " + user.getName());
+
+            // Log event
+            KU00298794_Logger.getInstance().logReservation(user.getId(), book.getBookId());
+
             return true;
         }
 

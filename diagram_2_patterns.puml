@@ -1,0 +1,142 @@
+@startuml Design Patterns - KU00298794
+
+skinparam backgroundColor white
+skinparam classBackgroundColor white
+skinparam classBorderColor black
+skinparam shadowing false
+skinparam defaultFontSize 10
+skinparam nodesep 60
+skinparam ranksep 50
+
+title Design Patterns - KU00298794
+
+package "Builder Pattern" {
+    class KU00298794_BookBuilder <<Builder>> {
+        -bookId: String
+        -title: String
+        -author: String
+        -category: String
+        -isbn: String
+        -reviews: List<KU00298794_Review>
+        -tags: List<String>
+        -edition: String
+        +KU00298794_BookBuilder()
+        +setBookId(bookId): KU00298794_BookBuilder
+        +setTitle(title): KU00298794_BookBuilder
+        +setAuthor(author): KU00298794_BookBuilder
+        +setCategory(category): KU00298794_BookBuilder
+        +setIsbn(isbn): KU00298794_BookBuilder
+        +addReview(reviewer, rating, comment): KU00298794_BookBuilder
+        +addTag(tag): KU00298794_BookBuilder
+        +setEdition(edition): KU00298794_BookBuilder
+        +build(): KU00298794_Book
+    }
+}
+
+package "State Pattern" {
+    interface KU00298794_BookState <<State>> {
+        +borrow(book, user): boolean
+        +returnBook(book): boolean
+        +reserve(book, user): boolean
+        +getStateName(): String
+    }
+
+    class KU00298794_AvailableState <<ConcreteState>> {
+        +borrow(book, user): boolean
+        +returnBook(book): boolean
+        +reserve(book, user): boolean
+        +getStateName(): String
+    }
+
+    class KU00298794_BorrowedState <<ConcreteState>> {
+        +borrow(book, user): boolean
+        +returnBook(book): boolean
+        +reserve(book, user): boolean
+        +getStateName(): String
+    }
+
+    class KU00298794_ReservedState <<ConcreteState>> {
+        +borrow(book, user): boolean
+        +returnBook(book): boolean
+        +reserve(book, user): boolean
+        +getStateName(): String
+    }
+}
+
+package "Strategy Pattern" {
+    interface KU00298794_FineCalculationStrategy <<Strategy>> {
+        +calculateFine(daysOverdue: int): double
+        +getFineRate(): double
+    }
+
+    class KU00298794_StudentFineStrategy <<ConcreteStrategy>> {
+        -FINE_RATE: double {static}
+        +calculateFine(daysOverdue): double
+        +getFineRate(): double
+    }
+
+    class KU00298794_FacultyFineStrategy <<ConcreteStrategy>> {
+        -FINE_RATE: double {static}
+        +calculateFine(daysOverdue): double
+        +getFineRate(): double
+    }
+
+    class KU00298794_GuestFineStrategy <<ConcreteStrategy>> {
+        -FINE_RATE: double {static}
+        +calculateFine(daysOverdue): double
+        +getFineRate(): double
+    }
+}
+
+package "Decorator Pattern" {
+    abstract class KU00298794_BookDecorator <<Decorator>> {
+        #decoratedBook: KU00298794_Book
+        +KU00298794_BookDecorator(book)
+        +getDecoratedBook(): KU00298794_Book
+        +{abstract} getDescription(): String
+        +{abstract} getAdditionalInfo(): String
+    }
+
+    class KU00298794_FeaturedBookDecorator <<ConcreteDecorator>> {
+        -featuredReason: String
+        +KU00298794_FeaturedBookDecorator(book, featuredReason)
+        +getDescription(): String
+        +getAdditionalInfo(): String
+        +getFeaturedReason(): String
+    }
+
+    class KU00298794_RecommendedBookDecorator <<ConcreteDecorator>> {
+        -recommendedBy: String
+        -rating: double
+        +KU00298794_RecommendedBookDecorator(book, recommendedBy, rating)
+        +getDescription(): String
+        +getAdditionalInfo(): String
+        +getRecommendation(): String
+    }
+
+    class KU00298794_SpecialEditionDecorator <<ConcreteDecorator>> {
+        -editionType: String
+        -specialFeatures: String
+        +KU00298794_SpecialEditionDecorator(book, editionType, specialFeatures)
+        +getDescription(): String
+        +getAdditionalInfo(): String
+        +getEditionInfo(): String
+    }
+}
+
+' State Pattern relationships
+KU00298794_BookState <|.. KU00298794_AvailableState
+KU00298794_BookState <|.. KU00298794_BorrowedState
+KU00298794_BookState <|.. KU00298794_ReservedState
+
+' Strategy Pattern relationships
+KU00298794_FineCalculationStrategy <|.. KU00298794_StudentFineStrategy
+KU00298794_FineCalculationStrategy <|.. KU00298794_FacultyFineStrategy
+KU00298794_FineCalculationStrategy <|.. KU00298794_GuestFineStrategy
+
+' Decorator Pattern relationships
+KU00298794_BookDecorator <|-- KU00298794_FeaturedBookDecorator
+KU00298794_BookDecorator <|-- KU00298794_RecommendedBookDecorator
+KU00298794_BookDecorator <|-- KU00298794_SpecialEditionDecorator
+
+@enduml

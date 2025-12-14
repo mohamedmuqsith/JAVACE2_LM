@@ -566,6 +566,53 @@ classDiagram
     KU00298794_LibraryCLI --> KU00298794_Library : uses
 
     %% ════════════════════════════════════════════════════════════════
+    %% LOGGER - Singleton Pattern
+    %% ════════════════════════════════════════════════════════════════
+
+    class KU00298794_Logger {
+        <<singleton>>
+        -static KU00298794_Logger instance
+        -List~String~ logs
+        -SimpleDateFormat dateFormat
+        -KU00298794_Logger()
+        +getInstance()$ KU00298794_Logger
+        +info(String message) void
+        +warning(String message) void
+        +error(String message) void
+        +debug(String message) void
+        +logBorrow(String userId, String bookId) void
+        +logReturn(String userId, String bookId) void
+        +logReservation(String userId, String bookId) void
+        +logFine(String userId, double amount) void
+        +logFinePayment(String userId, double amount) void
+        +logUserRegistration(String userId, String membershipType) void
+        +logBookAdded(String bookId, String title) void
+        +logNotification(String userId, String notificationType) void
+        +logOverdue(String userId, String bookId, int daysOverdue) void
+        +getAllLogs() List~String~
+        +getRecentLogs(int count) List~String~
+        +clearLogs() void
+        +getLogCount() int
+        +printAllLogs() void
+    }
+
+    class LogLevel {
+        <<enumeration>>
+        INFO
+        WARNING
+        ERROR
+        DEBUG
+    }
+
+    KU00298794_Logger ..> LogLevel : uses
+
+    %% Logger Relationships
+    KU00298794_BorrowingService ..> KU00298794_Logger : logs to
+    KU00298794_ReservationService ..> KU00298794_Logger : logs to
+    KU00298794_NotificationService ..> KU00298794_Logger : logs to
+    KU00298794_Library ..> KU00298794_Logger : logs to
+
+    %% ════════════════════════════════════════════════════════════════
     %% CORE ENTITY RELATIONSHIPS
     %% ════════════════════════════════════════════════════════════════
 
