@@ -25,7 +25,7 @@ public class KU00298794_BorrowingService {
     public boolean borrowBook(KU00298794_User user, KU00298794_Book book) {
         // Check if user has reached borrowing limit
         if (user.getBorrowedBooks().size() >= user.getBorrowingLimit()) {
-            System.out.println("❌ Borrowing limit reached for " + user.getName());
+            System.out.println("Borrowing limit reached for " + user.getName());
             return false;
         }
 
@@ -43,7 +43,7 @@ public class KU00298794_BorrowingService {
             // Log event
             KU00298794_Logger.getInstance().logBorrow(user.getId(), book.getBookId());
 
-            System.out.println("✓ Book borrowed successfully!");
+            System.out.println("Book borrowed successfully!");
             System.out.println("  Due Date: " + dueDate);
 
             return true;
@@ -57,7 +57,7 @@ public class KU00298794_BorrowingService {
         KU00298794_BorrowRecord record = activeBorrowings.get(key);
 
         if (record == null) {
-            System.out.println("❌ No active borrow record found.");
+            System.out.println(" No active borrow record found.");
             return false;
         }
 
@@ -70,7 +70,7 @@ public class KU00298794_BorrowingService {
                 double fine = calculateFine(record);
                 record.setFineAmount(fine);
 
-                System.out.println("⚠ Book returned late!");
+                System.out.println("Book returned late!");
                 System.out.println("  Overdue days: " + overdueDays);
                 System.out.println("  Fine: LKR " + String.format("%.2f", fine));
 
@@ -80,7 +80,7 @@ public class KU00298794_BorrowingService {
                 // Log fine
                 KU00298794_Logger.getInstance().logFine(user.getId(), fine);
             } else {
-                System.out.println("✓ Book returned on time!");
+                System.out.println("Book returned on time!");
             }
 
             user.removeBorrowRecord(record);

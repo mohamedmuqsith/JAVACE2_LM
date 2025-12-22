@@ -40,9 +40,9 @@ public class KU00298794_Library {
     public void removeBook(String bookId) {
         KU00298794_Book removed = books.remove(bookId);
         if (removed != null) {
-            System.out.println("✓ Book removed: " + removed.getTitle());
+            System.out.println("Book removed: " + removed.getTitle());
         } else {
-            System.out.println("❌ Book not found with ID: " + bookId);
+            System.out.println(" Book not found with ID: " + bookId);
         }
     }
 
@@ -79,9 +79,9 @@ public class KU00298794_Library {
     public void removeUser(String userId) {
         KU00298794_User removed = users.remove(userId);
         if (removed != null) {
-            System.out.println("✓ User removed: " + removed.getName());
+            System.out.println("User removed: " + removed.getName());
         } else {
-            System.out.println("❌ User not found with ID: " + userId);
+            System.out.println("User not found with ID: " + userId);
         }
     }
 
@@ -96,7 +96,7 @@ public class KU00298794_Library {
     // Librarian Management
     public void addLibrarian(KU00298794_Librarian librarian) {
         librarians.put(librarian.getLibrarianId(), librarian);
-        System.out.println("✓ Librarian added: " + librarian.getName());
+        System.out.println("Librarian added: " + librarian.getName());
     }
 
     public KU00298794_Librarian getLibrarian(String librarianId) {

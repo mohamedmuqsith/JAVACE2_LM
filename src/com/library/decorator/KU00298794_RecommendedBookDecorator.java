@@ -18,7 +18,7 @@ public class KU00298794_RecommendedBookDecorator extends KU00298794_BookDecorato
 
     @Override
     public String getDescription() {
-        return "👍 RECOMMENDED: " + decoratedBook.getDescription();
+        return " RECOMMENDED: " + decoratedBook.getDescription();
     }
 
     @Override

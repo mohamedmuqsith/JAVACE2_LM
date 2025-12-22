@@ -262,7 +262,7 @@ public class KU00298794_LibraryCLI {
         library.getNotificationService().attach(new KU00298794_EmailNotification(userId, email));
         library.getNotificationService().attach(new KU00298794_SMSNotification(userId, contact));
 
-        System.out.println("✓ Notifications enabled: Email and SMS");
+        System.out.println("Notifications enabled: Email and SMS");
     }
 
     private void viewAllUsers() {
@@ -295,7 +295,7 @@ public class KU00298794_LibraryCLI {
         KU00298794_Book book = library.getBook(bookId);
 
         if (user == null || book == null) {
-            System.out.println("❌ Invalid user or book ID.");
+            System.out.println("Invalid user or book ID.");
             return;
         }
 
@@ -314,7 +314,7 @@ public class KU00298794_LibraryCLI {
         KU00298794_Book book = library.getBook(bookId);
 
         if (user == null || book == null) {
-            System.out.println("❌ Invalid user or book ID.");
+            System.out.println("Invalid user or book ID.");
             return;
         }
 
@@ -333,7 +333,7 @@ public class KU00298794_LibraryCLI {
         KU00298794_Book book = library.getBook(bookId);
 
         if (user == null || book == null) {
-            System.out.println("❌ Invalid user or book ID.");
+            System.out.println("Invalid user or book ID.");
             return;
         }
 
@@ -547,7 +547,7 @@ public class KU00298794_LibraryCLI {
         KU00298794_Guest guest = new KU00298794_Guest("U003", "Bob Wilson", "bob@email.com", "+94778888888");
         library.addUser(guest);
 
-        System.out.println("✓ Sample data loaded successfully!\n");
+        System.out.println("Sample data loaded successfully!\n");
     }
 
     // Helper methods

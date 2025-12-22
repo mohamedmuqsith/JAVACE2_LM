@@ -38,7 +38,7 @@ public class KU00298794_ReservationService {
             return true;
         }
 
-        System.out.println("❌ Failed to reserve book.");
+        System.out.println("Failed to reserve book.");
         return false;
     }
 
@@ -58,7 +58,7 @@ public class KU00298794_ReservationService {
             }
         }
 
-        System.out.println("❌ No reservation found for this user.");
+        System.out.println(" No reservation found for this user.");
         return false;
     }
 
@@ -66,7 +66,7 @@ public class KU00298794_ReservationService {
         KU00298794_User nextReserver = book.getNextReserver();
 
         if (nextReserver != null) {
-            System.out.println("📢 Notifying next reserver: " + nextReserver.getName());
+            System.out.println("Notifying next reserver: " + nextReserver.getName());
             notificationService.notifyReservationAvailable(nextReserver, book);
         }
     }

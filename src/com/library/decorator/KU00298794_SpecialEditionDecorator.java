@@ -18,7 +18,7 @@ public class KU00298794_SpecialEditionDecorator extends KU00298794_BookDecorator
 
     @Override
     public String getDescription() {
-        return "💎 SPECIAL EDITION: " + decoratedBook.getDescription();
+        return "SPECIAL EDITION: " + decoratedBook.getDescription();
     }
 
     @Override
