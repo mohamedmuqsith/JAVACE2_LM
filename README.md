@@ -1,122 +1,227 @@
-# Smart Library Management System - README
+Smart Library Management System
 
-## Student ID: KU00298794
+Student ID: KU00298794
+University: Kingston University
+Year: 2025
 
-## Overview
-A comprehensive Java-based Smart Library Management System implementing six design patterns for managing book borrowing, returns, reservations, fines, and notifications.
+Overview
 
-## Features
-- **Book Management**: Add, update, search, and remove books
-- **User Management**: Support for Student, Faculty, and Guest memberships
-- **Borrowing & Returning**: Automated due date calculation and fine processing
-- **Reservations**: Queue-based reservation system with notifications
-- **Notifications**: Real-time Email and SMS notifications for overdue books and reservations
-- **Reports**: Most borrowed books, active borrowers, overdue books, revenue reports
-- **Command History**: Full audit trail with undo functionality
+The Smart Library Management System is a Java-based console application designed to efficiently manage library operations such as book borrowing, returning, reservations, fine calculation, and user notifications.
+The system is built using Object-Oriented Programming principles and demonstrates the practical implementation of six software design patterns.
 
-## Design Patterns Implemented
+This project was developed as an academic submission to showcase clean architecture, design pattern usage, and real-world problem solving in software engineering.
 
-1. **State Pattern**: Book availability states (Available, Borrowed, Reserved)
-2. **Strategy Pattern**: Fine calculation strategies (Student: LKR 50/day, Faculty: LKR 20/day, Guest: LKR 100/day)
-3. **Builder Pattern**: Complex book object creation with optional metadata
-4. **Command Pattern**: User actions as reversible commands with logging
-5. **Observer Pattern**: Notification system for library events
-6. **Decorator Pattern**: Dynamic book features (Featured, Recommended, Special Edition)
+Key Features
 
-## Project Structure
-```
+Book Management
+
+Add, update, search, and remove books
+
+User Management
+
+Supports Student, Faculty, and Guest users
+
+Borrowing & Returning
+
+Automatic due date handling and fine calculation
+
+Reservation System
+
+Queue-based book reservations
+
+Notification System
+
+Email and SMS alerts for reservations and overdue books
+
+Reports
+
+Most borrowed books
+
+Active users
+
+Overdue books
+
+Revenue and fine reports
+
+Command History
+
+Tracks all user actions with undo support
+
+Design Patterns Used
+
+The following six design patterns are fully implemented and demonstrated:
+
+State Pattern
+
+Manages book states such as Available, Borrowed, and Reserved
+
+Strategy Pattern
+
+Different fine calculation strategies:
+
+Student: LKR 50 per day
+
+Faculty: LKR 20 per day
+
+Guest: LKR 100 per day
+
+Builder Pattern
+
+Used to create complex Book objects with optional attributes
+
+Command Pattern
+
+Encapsulates user actions and supports undo functionality
+
+Observer Pattern
+
+Sends Email and SMS notifications for library events
+
+Decorator Pattern
+
+Dynamically adds features like Featured, Recommended, and Special Edition to books
+
+Project Structure
 SmartLibrarySystem/
 ├── src/com/library/
 │   ├── KU00298794_Library.java
-│   ├── model/           # Domain entities
-│   ├── state/           # State Pattern
-│   ├── strategy/        # Strategy Pattern
-│   ├── builder/         # Builder Pattern
-│   ├── command/         # Command Pattern
-│   ├── observer/        # Observer Pattern
-│   ├── decorator/       # Decorator Pattern
-│   ├── service/         # Business logic
-│   └── ui/              # CLI interface
-├── bin/                 # Compiled classes
-├── class_diagram.puml   # UML class diagram
+│   ├── model/           # Core domain models
+│   ├── state/           # State Pattern implementation
+│   ├── strategy/        # Strategy Pattern implementation
+│   ├── builder/         # Builder Pattern implementation
+│   ├── command/         # Command Pattern implementation
+│   ├── observer/        # Observer Pattern implementation
+│   ├── decorator/       # Decorator Pattern implementation
+│   ├── service/         # Business logic layer
+│   └── ui/              # Command Line Interface
+├── bin/                 # Compiled class files
+├── class_diagram.puml   # UML Class Diagram
 ├── DESIGN_PATTERN_JUSTIFICATION.md
 └── README.md
-```
 
-## Compilation & Execution
-
-### Compile
-```powershell
+How to Compile and Run
+Compile the Project
 javac -d bin -sourcepath src src/com/library/ui/KU00298794_LibraryCLI.java
-```
 
-### Run
-```powershell
+Run the Application
 java -cp bin com.library.ui.KU00298794_LibraryCLI
-```
 
-## Sample Data
-The system initializes with:
-- 3 Books: Clean Code, The Pragmatic Programmer, Introduction to Algorithms
-- 3 Users: John Doe (Student), Dr. Jane Smith (Faculty), Bob Wilson (Guest)
-- Notifications enabled for all users
+Sample Data
 
-## Main Menu Options
-1. **Manage Books** - Add, view, search, remove books
-2. **Manage Users** - Register, view, remove users
-3. **Borrow Book** - Execute borrow command
-4. **Return Book** - Execute return command (with fine calculation)
-5. **Reserve Book** - Execute reserve command
-6. **View Reports** - Generate various library reports
-7. **Demonstrate Design Patterns** - Interactive pattern demonstrations
-8. **View Command History** - See all executed commands
-9. **Undo Last Action** - Reverse the last command
-0. **Exit** - Close the application
+When the application starts, the following data is pre-loaded:
 
-## Design Pattern Demonstrations
-From the main menu, select option 7 to interactively demonstrate each design pattern:
-- State Pattern: See book state transitions
-- Strategy Pattern: Compare fine calculations for different user types
-- Builder Pattern: Create books with optional metadata
-- Command Pattern: View command history and undo functionality
-- Observer Pattern: See notification system in action
-- Decorator Pattern: Apply dynamic features to books
+Books
 
-## Testing
-All design patterns have been tested and verified:
-- ✅ State transitions (Available → Borrowed → Reserved → Available)
-- ✅ Fine calculation for all three user types
-- ✅ Complex book creation with Builder
-- ✅ Command execution and undo
-- ✅ Observer notifications (Email/SMS)
-- ✅ Book decoration with multiple features
-- ✅ Reports generation
-- ✅ Reservation queue management
+Clean Code
 
-## Documentation
-- **Class Diagram**: `class_diagram.puml` (PlantUML format)
-- **Pattern Justification**: `DESIGN_PATTERN_JUSTIFICATION.md`
-- **Walkthrough**: Available in brain directory
-- **Screenshots**: Included in walkthrough
+The Pragmatic Programmer
 
-## Requirements Compliance
-✅ All classes prefixed with Kingston University student ID (KU00298794_)  
-✅ Six design patterns fully implemented and justified  
-✅ Object-oriented programming best practices  
-✅ Efficient data structures (HashMap, ArrayList, Queue)  
-✅ CLI user interface  
-✅ Complete functional requirements  
+Introduction to Algorithms
 
-## Technical Details
-- **Language**: Java
-- **Interface**: Command Line Interface (CLI)
-- **Data Structures**: HashMap (O(1) lookup), ArrayList, LinkedList (Queue)
-- **Architecture**: Layered (Model, Service, UI)
-- **Design**: Package-by-feature organization
+Users
 
-## Author
-Student ID: KU00298794  
-Kingston University
+John Doe – Student
 
-## License
-Educational Project - 2025
+Dr. Jane Smith – Faculty
+
+Bob Wilson – Guest
+
+Notifications are enabled for all users
+
+Main Menu Options
+
+Manage Books
+
+Manage Users
+
+Borrow a Book
+
+Return a Book (with fine calculation)
+
+Reserve a Book
+
+View Reports
+
+Demonstrate Design Patterns
+
+View Command History
+
+Undo Last Action
+
+Exit Application
+
+Design Pattern Demonstration
+
+Option 7 in the main menu allows interactive demonstrations of each design pattern:
+
+Book state transitions (State Pattern)
+
+Fine calculation comparison (Strategy Pattern)
+
+Book creation with optional fields (Builder Pattern)
+
+Command execution and undo (Command Pattern)
+
+Notification alerts (Observer Pattern)
+
+Dynamic book enhancements (Decorator Pattern)
+
+Testing Summary
+
+All system features and design patterns have been tested successfully:
+
+✔ Book state transitions
+
+✔ Fine calculation for all user types
+
+✔ Builder-based book creation
+
+✔ Command execution and undo
+
+✔ Email and SMS notifications
+
+✔ Multiple book decorations
+
+✔ Report generation
+
+✔ Reservation queue handling
+
+Documentation
+
+UML Class Diagram: class_diagram.puml
+
+Design Pattern Justification: DESIGN_PATTERN_JUSTIFICATION.md
+
+System Walkthrough: Included in the project directory
+
+Screenshots: Provided as part of the walkthrough
+
+Requirement Compliance
+
+✔ All classes prefixed with student ID (KU00298794_)
+✔ Six design patterns implemented and justified
+✔ Strong OOP principles applied
+✔ Efficient data structures used (HashMap, ArrayList, Queue)
+✔ Command Line Interface implemented
+✔ All functional requirements satisfied
+
+Technical Information
+
+Programming Language: Java
+
+Interface: Command Line Interface (CLI)
+
+Data Structures: HashMap, ArrayList, LinkedList
+
+Architecture: Layered architecture (Model, Service, UI)
+
+Design Approach: Package-by-feature
+
+Author
+
+Student ID: KU00298794
+University: Kingston University
+
+License
+
+Educational Project – 2025
